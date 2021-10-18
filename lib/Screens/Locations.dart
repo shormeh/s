@@ -468,6 +468,28 @@ class _LocationsState extends State<Locations> {
                         ),
                       ),
                     ),
+
+                    Positioned(
+                      top: 50,
+                      left: 20,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage(
+                                    isHomeScreen: true,
+                                  )));
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                          ),
+                        ),
+                      ),
+                    ),
                     Positioned(
                       top: size.height * 0.15,
                       right: size.width * 0.05,

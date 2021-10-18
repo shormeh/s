@@ -37,6 +37,7 @@ class _Card1State extends State<Card1> {
   List<String> addOn = [];
   String token = '';
   int counter;
+int vendorID;
   @override
   void initState() {
     // TODO: implement initState
@@ -50,6 +51,7 @@ class _Card1State extends State<Card1> {
     final _translateLanguage = prefs.getInt('translateLanguage');
     final _token = prefs.getString("token");
     final _counter = prefs.getInt("counter");
+    final _vendor = prefs.getInt("vendorID");
 
     if (_cardToken != null) {
       setState(() {
@@ -62,6 +64,7 @@ class _Card1State extends State<Card1> {
     getMyCardProducts();
 
     setState(() {
+      vendorID = _vendor;
       _counter == null ? counter = 0 : counter = _counter;
       translationLanguage = _translateLanguage;
     });
@@ -192,7 +195,7 @@ class _Card1State extends State<Card1> {
         ),
         backgroundColor: HexColor('#40976c'),
         elevation: 5.0,
-        leading: GestureDetector(
+        leading: InkWell(
           onTap: () {
             Navigator.push(
                 context,
@@ -291,20 +294,105 @@ class _Card1State extends State<Card1> {
                                               Row(
                                                 children: [
                                                   Expanded(
-                                                    child: Text(
-                                                      translate('lan.count'),
-                                                      style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontFamily:
-                                                              'Tajawal'),
+                                                    child:  Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            translate('lan.numOfOrders'),
+                                                            style: TextStyle(
+                                                              fontWeight: FontWeight.w500,
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            if (allMyCardProducts[index].count > 1)
+                                                              setState(() {
+                                                                allMyCardProducts[index].count--;
+                                                                print(allMyCardProducts[index].count);
+                                                                changeCount(allMyCardProducts[index],allMyCardProducts[index].count);
+                                                              });
+
+                                                          },
+                                                          child: Container(
+                                                            width: 40,
+                                                            height: 40,
+                                                            decoration: BoxDecoration(
+                                                              color: HexColor('#40976C'),
+                                                              shape: BoxShape.circle,
+                                                            ),
+                                                            child: Center(
+                                                              child: Text(
+                                                                '-',
+                                                                style: TextStyle(fontSize: 18, color: Colors.white),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 7,
+                                                        ),
+                                                        Container(
+                                                          width: 50,
+                                                          height: 40,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(20),
+                                                              border: Border.all(
+                                                                color: HexColor('#40976C'),
+                                                              )),
+                                                          child: Center(
+                                                            child: Text(
+                                                              '${allMyCardProducts[index].count} ',
+                                                              style: TextStyle(
+                                                                fontSize: 14,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 7,
+                                                        ),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              allMyCardProducts[index].count++;
+                                                              changeCount(allMyCardProducts[index],allMyCardProducts[index].count);
+                                                            });
+
+                                                          },
+                                                          child: Container(
+                                                            width: 40,
+                                                            height: 40,
+                                                            decoration: BoxDecoration(
+                                                              color: HexColor('#40976C'),
+                                                              shape: BoxShape.circle,
+                                                            ),
+                                                            child: Center(
+                                                              child: Text(
+                                                                '+',
+                                                                style: TextStyle(fontSize: 18, color: Colors.white),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
+                                                    // Text(
+                                                    //   translate('lan.count'),
+                                                    //   style: TextStyle(
+                                                    //       fontSize: 16,
+                                                    //       fontFamily:
+                                                    //           'Tajawal'),
+                                                    // ),
                                                   ),
-                                                  Text(
-                                                    '${allMyCardProducts[index].count} ',
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        fontFamily: 'Tajawal'),
-                                                  ),
+                                                  // Text(
+                                                  //   '${allMyCardProducts[index].count} ',
+                                                  //   style: TextStyle(
+                                                  //       fontSize: 16,
+                                                  //       fontFamily: 'Tajawal'),
+                                                  // ),
                                                 ],
                                               ),
                                               Divider(),
@@ -569,6 +657,32 @@ class _Card1State extends State<Card1> {
                   ),
                 ),
     );
+  }
+
+
+  Future changeCount(Card1Model product,int count) async {
+    print('cccccc');
+    print(token.toString()+'hhhhhhh');
+    print(vendorID);
+    print(product.id.toString());
+    print(count.toString());
+    print(product.addOn.toString());
+    print(product.notes.toString());
+      var  response = await http.post("${HomePage.URL}cart/add_product", headers: {
+        "Content-Language": lan,
+        "Authorization": "Bearer $token",
+      }, body: {
+         "vendor_id": "$vendorID",
+        "product_id": product.productId.toString(),
+        "quantity": count.toString(),
+        "options": product.option,
+        "addons": product.addOn.toString(),
+        "note": product.notes.toString(),
+        "cart_token": cardToken,
+      });
+      var data = response.body;
+      print(data);
+    print('ooooooooo');
   }
 
   void displayToastMessage(var toastMessage) {

@@ -173,9 +173,15 @@ class _OrderDetailsState extends State<OrderDetails> {
     if (dataOrderAfterCoupon['success'] == "1") {
       displayToastMessage(" ${dataOrderAfterCoupon['message']}");
       setPrfs("${dataOrderAfterCoupon['order']['id']}");
+      setState(() {
+        isIndicatorActive =false;
+      });
 
     } else {
       displayToastMessage(" ${dataOrderAfterCoupon['message']}");
+      setState(() {
+        isIndicatorActive =false;
+      });
     }
   }
 
@@ -188,7 +194,7 @@ prefs.setInt("counter", 0);
       context,
       MaterialPageRoute(builder: (context) => OrderStatus(orderID: id,backToMyOrders: true,)),
     );
-    isIndicatorActive =false;
+
   }
 
   @override
