@@ -91,7 +91,7 @@ String token;
   }
 
   //FCM
-  fcmNotification() {
+  fcmNotification() async{
     //FCM
     FirebaseMessaging.instance
         .getInitialMessage()
@@ -101,10 +101,28 @@ String token;
       }
     });
 
-    //دية بتستقبل النوتيكفكشن وتعرضها
+    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true, // Required to display a heads up notification
+      badge: true,
+      sound: true,
+    );
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;
+
+
+
       if (notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,

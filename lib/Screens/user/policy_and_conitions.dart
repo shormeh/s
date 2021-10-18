@@ -103,8 +103,6 @@ setState(() {
         textDirection: TextDirection.rtl,
                 child: Html(
         data: terms,
-                  padding: EdgeInsets.all(10),
-                  shrinkToFit: true,
       ),
               ),
             ],

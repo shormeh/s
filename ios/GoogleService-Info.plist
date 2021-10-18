@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>403212737435-lnin5r5k7b5rmrpkp8esbmje80tkke1n.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.403212737435-lnin5r5k7b5rmrpkp8esbmje80tkke1n</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCw6EtRYhEyt0AryxivujW3Urmn75zr66Q</string>
+	<key>GCM_SENDER_ID</key>
+	<string>403212737435</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.dev.worlddesign.shormeh</string>
+	<key>PROJECT_ID</key>
+	<string>shormehnew</string>
+	<key>STORAGE_BUCKET</key>
+	<string>shormehnew.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:403212737435:ios:61f32693ab6dc13bda5f3e</string>
+	<key>DATABASE_URL</key>
+	<string>https://shormehnew-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
