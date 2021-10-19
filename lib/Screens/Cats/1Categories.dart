@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
@@ -49,6 +50,8 @@ String token;
   List<int> productId=[];
   List<int> catId=[];
 
+
+
   //FCM
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
@@ -61,11 +64,20 @@ String token;
     super.initState();
     getAllSliderHome();
     getDataFromSharedPref();
+    getLocation();
     print(widget.vendorID);
+  }
+
+  getLocation()async{
+    final prefs = await SharedPreferences.getInstance();
+    Position position = await Geolocator.getCurrentPosition();
+    prefs.setDouble('lat', position.latitude);
+    prefs.setDouble('long', position.longitude);
   }
 
   Future<void> getDataFromSharedPref() async {
     final prefs = await SharedPreferences.getInstance();
+
     prefs.setBool('branchSelected', true);
 
     final _vendorID = prefs.getInt('vendorID');
@@ -85,7 +97,6 @@ String token;
       //HomePage.cardToken = _cardToken;
     });
     getTime(vendorID);
-
     fcmNotification();
     getAllCats();
   }

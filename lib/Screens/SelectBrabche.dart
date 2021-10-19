@@ -35,10 +35,11 @@ class _SelectBrancheState extends State<SelectBranche>
   bool isIndicatorActive = true;
 
   // Position currentLocation;
-  bool circularIndicatorActive = true;
+
   bool noMarketsOnMap = false;
   List<LocationModel> allLocationsGPS = new List<LocationModel>();
-
+double lat;
+double long;
   // bool enableClick=true;
 
   int translateLanguage = 0;
@@ -47,7 +48,7 @@ class _SelectBrancheState extends State<SelectBranche>
   void initState() {
     // TODO: implement initState
     super.initState();
-    getBranches();
+
     print(widget.lat.toString() + widget.long.toString());
     getAllSliderCities();
     getDataFromSharedPref();
@@ -56,10 +57,27 @@ class _SelectBrancheState extends State<SelectBranche>
   Future<void> getDataFromSharedPref() async {
     final prefs = await SharedPreferences.getInstance();
     final _translateLanguage = prefs.getInt('translateLanguage');
+    final _lat=prefs.getDouble('lat');
+    final _long=prefs.getDouble('long');
+    if(widget.lat==null)
+    {
+     setState(() {
+      lat =_lat;
+      long = _long;
+     });
+    }
+    else
+      setState(() {
+        lat =widget.lat;
+        long = widget.long;
+      });
+
     if (_translateLanguage == null && widget.lan == null) {
       setState(() {
         prefs.setInt('translateLanguage', 0);
         widget.lan = 0;
+
+
       });
     } else {
       setState(() {
@@ -67,6 +85,9 @@ class _SelectBrancheState extends State<SelectBranche>
         widget.lan = _translateLanguage;
       });
     }
+
+
+    getBranches();
   }
 
   Future getAllSliderCities() async {
@@ -84,14 +105,16 @@ class _SelectBrancheState extends State<SelectBranche>
 
 
   getBranches() async {
-    var response;
-    if (widget.lat == null) {
-      Position position = await Geolocator.getCurrentPosition();
-      response = await http.get(
-          "${HomePage.URL}vendors?lat=${position.latitude}&long=${position.longitude}");
-    } else
-      response = await http
-          .get("${HomePage.URL}vendors?lat=${widget.lat}&long=${widget.long}");
+    // var response;
+    // if (widget.lat == null) {
+    //   Position position = await Geolocator.getCurrentPosition();
+    //   response = await http.get(
+    //       "${HomePage.URL}vendors?lat=${position.latitude}&long=${position.longitude}");
+    // }
+    // else
+    print(widget.lat.toString()+'gggggg');
+      var response = await http
+          .get("${HomePage.URL}vendors?lat=${lat}&long=${long}");
 
     var data = json.decode(response.body);
     print(data);
@@ -113,7 +136,7 @@ class _SelectBrancheState extends State<SelectBranche>
         ));
       }
 
-      circularIndicatorActive = false;
+      isIndicatorActive = false;
       noMarketsOnMap = true;
     });
   }
@@ -202,14 +225,10 @@ class _SelectBrancheState extends State<SelectBranche>
                         child: GestureDetector(
                           onTap: () {
                             if(allLocationsGPS.isEmpty)
-                              showDialogeLoading(context);
+                         showDialogeLoading(context);
+
                             else
                               showDialogeBranches(context);
-                            // if(allLocationsGPS.isNotEmpty)
-                            // showDialogeBranches(context);
-                            // else {
-                            //   showDialogeBranches(context);
-                            // }
                           },
                           child: Container(
                               decoration: BoxDecoration(
@@ -276,7 +295,6 @@ class _SelectBrancheState extends State<SelectBranche>
     showDialog(
         context: context,
         builder: (BuildContext context) {
-        
             return AlertDialog(
               contentPadding: EdgeInsets.all(0.0),
               backgroundColor: Colors.transparent,
@@ -414,12 +432,13 @@ class _SelectBrancheState extends State<SelectBranche>
     showDialog(
         context: context,
         builder: (BuildContext context) {
-            if(isIndicatorActive == false)
+            if(!isIndicatorActive) {
               Navigator.pop(context);
+            }
             else
-          Future.delayed(Duration(seconds:3), () {
-            getBranches();
-            Navigator.pop(context);
+          Future.delayed(Duration(seconds: 3), () {
+            // getBranches();
+             Navigator.pop(context);
             showDialogeBranches(context);
           });
             return AlertDialog(

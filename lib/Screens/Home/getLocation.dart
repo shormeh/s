@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shormeh/Screens/Home/HomePage.dart';
 import 'package:shormeh/Screens/SelectBrabche.dart';
@@ -19,7 +20,7 @@ class GetLocation extends StatefulWidget {
 class _GetLocationState extends State<GetLocation> {
   Position currentLocation;
   bool noMarketsOnMap = false;
-  bool circularIndicatorActive = true;
+  bool circularIndicatorActive = false;
   double lat;
   double long;
 
@@ -91,11 +92,19 @@ class _GetLocationState extends State<GetLocation> {
   }
 
   locateUser() async {
+    setState(() {
+      circularIndicatorActive=true;
+    });
     final prefs = await SharedPreferences.getInstance();
     Position p = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium);
     if (p.latitude != null) {
       prefs.setBool('getLocation', true);
+      prefs.setDouble('lat', p.latitude);
+      prefs.setDouble('long', p.longitude);
+      setState(() {
+        circularIndicatorActive=false;
+      });
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -103,6 +112,7 @@ class _GetLocationState extends State<GetLocation> {
                     lat: p.latitude,
                     long: p.longitude,
                   )));
+
     } else
       locateUser();
   }
@@ -111,67 +121,86 @@ class _GetLocationState extends State<GetLocation> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Column(
+
+      body: Stack(
         children: [
-          const SizedBox(
-            height: 150,
-          ),
-          Image.asset(
-            'assets/images/Group 9610.png',
-            height: size.height * 0.4,
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    translate('lan.openGps'),
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 5),
-                  Container(
-                    width: size.width * 0.8,
-                    child: Text(
-                      translate('lan.openGps2'),
-                      style: TextStyle(
-                        fontSize: 16,
+          Column(
+            children: [
+              const SizedBox(
+                height: 150,
+              ),
+              Image.asset(
+                'assets/images/Group 9610.png',
+                height: size.height * 0.4,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        translate('lan.openGps'),
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       ),
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Container(
-                    width: size.width * 0.85,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: HexColor('#40976c'),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        getLocationStatus();
-                      },
-                      child: Center(
+                      const SizedBox(height: 5),
+                      Container(
+                        width: size.width * 0.8,
                         child: Text(
-                          translate('lan.openGps3'),
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          translate('lan.openGps2'),
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                    ),
-                  )
-                ],
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Container(
+                        width: size.width * 0.85,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: HexColor('#40976c'),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            getLocationStatus();
+                          },
+                          child: Center(
+                            child: Text(
+                              translate('lan.openGps3'),
+                              style: TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+          circularIndicatorActive? Container(height: double.infinity,
+            width: double.infinity,
+            color: Colors.white.withOpacity(0.6),
+            child: Center(
+              child: Container(
+                height: 100,
+                width: 100,
+                child: Lottie.asset('assets/images/lf20_mvihowzk.json',fit: BoxFit. fill,height: 100,
+                  width: 100,),
+
               ),
             ),
           )
+              :Container(),
         ],
       ),
     );
