@@ -270,11 +270,55 @@ int vendorID;
                                     child: ExpansionTile(
                                       iconColor: HexColor('#40976c'),
                                       textColor: HexColor('#40976c'),
-                                      title: Text(
-                                        "${allMyCardProducts[index].productName}" ??
-                                            '',
-                                        style: TextStyle(fontFamily: 'Tajawal'),
+                                      title: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "${allMyCardProducts[index].productName}" ??
+                                                  '',
+                                              style: TextStyle(fontFamily: 'Tajawal'),
+                                            ),
+                                          ),
+
+                                          Row(
+                                            children: [
+                                              InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      allMyCardProducts[index].count++;
+                                                      changeCount(allMyCardProducts[index],allMyCardProducts[index].count);
+                                                    });
+                                                  },
+                                                  child: Image.asset('assets/images/plus.png',height: 30,color:HexColor('#40976c'))
+                                              ),
+                                              const SizedBox(width: 10,),
+                                              Text(
+                                                '${allMyCardProducts[index].count} ',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                    color:HexColor('#40976c')
+                                                ),
+                                              ),
+                                              const SizedBox(width: 7,),
+                                              InkWell(
+                                                  onTap: () {
+
+                                                    if (allMyCardProducts[index].count > 1)
+                                                      setState(() {
+                                                        allMyCardProducts[index].count--;
+                                                        print(allMyCardProducts[index].count);
+                                                        changeCount(allMyCardProducts[index],allMyCardProducts[index].count);
+                                                      });
+
+                                                  },
+                                                  child: Image.asset('assets/images/minus.png',height: 30,color:HexColor('#40976c') ,)
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
+
                                       leading: CircleAvatar(
                                         backgroundImage: NetworkImage(
                                           ' ${allMyCardProducts[index].productImage}'
@@ -299,93 +343,23 @@ int vendorID;
                                                       children: [
                                                         Expanded(
                                                           child: Text(
-                                                            translate('lan.numOfOrders'),
+                                                            translate('lan.count'),
                                                             style: TextStyle(
-                                                              fontWeight: FontWeight.w500,
-                                                            ),
+                                                                fontSize: 16,
+                                                                fontFamily:
+                                                                    'Tajawal'),
                                                           ),
                                                         ),
 
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            if (allMyCardProducts[index].count > 1)
-                                                              setState(() {
-                                                                allMyCardProducts[index].count--;
-                                                                print(allMyCardProducts[index].count);
-                                                                changeCount(allMyCardProducts[index],allMyCardProducts[index].count);
-                                                              });
-
-                                                          },
-                                                          child: Container(
-                                                            width: 40,
-                                                            height: 40,
-                                                            decoration: BoxDecoration(
-                                                              color: HexColor('#40976C'),
-                                                              shape: BoxShape.circle,
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                '-',
-                                                                style: TextStyle(fontSize: 18, color: Colors.white),
-                                                              ),
-                                                            ),
-                                                          ),
+                                                        Text(
+                                                          '${allMyCardProducts[index].count} ',
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontFamily: 'Tajawal'),
                                                         ),
-                                                        SizedBox(
-                                                          width: 7,
-                                                        ),
-                                                        Container(
-                                                          width: 50,
-                                                          height: 40,
-                                                          decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(20),
-                                                              border: Border.all(
-                                                                color: HexColor('#40976C'),
-                                                              )),
-                                                          child: Center(
-                                                            child: Text(
-                                                              '${allMyCardProducts[index].count} ',
-                                                              style: TextStyle(
-                                                                fontSize: 14,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 7,
-                                                        ),
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              allMyCardProducts[index].count++;
-                                                              changeCount(allMyCardProducts[index],allMyCardProducts[index].count);
-                                                            });
-
-                                                          },
-                                                          child: Container(
-                                                            width: 40,
-                                                            height: 40,
-                                                            decoration: BoxDecoration(
-                                                              color: HexColor('#40976C'),
-                                                              shape: BoxShape.circle,
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                '+',
-                                                                style: TextStyle(fontSize: 18, color: Colors.white),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )
                                                       ],
                                                     ),
-                                                    // Text(
-                                                    //   translate('lan.count'),
-                                                    //   style: TextStyle(
-                                                    //       fontSize: 16,
-                                                    //       fontFamily:
-                                                    //           'Tajawal'),
-                                                    // ),
+
                                                   ),
                                                   // Text(
                                                   //   '${allMyCardProducts[index].count} ',

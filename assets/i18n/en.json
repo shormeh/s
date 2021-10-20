@@ -163,5 +163,6 @@
   "policy": "By creating an account you agree our Terms of Service and Privacy Policy",
   "discound2": "Discount/Points",
   "pointsLimit": "Minimum number of points that can be used",
-  "Point": "point"
+  "Point": "point",
+  "finishOrder":"Finish Order"
 }}

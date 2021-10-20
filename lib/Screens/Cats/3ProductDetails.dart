@@ -228,30 +228,33 @@ class _ProductDetailsState extends State<ProductDetails> {
           child: Icon(Icons.arrow_back_ios),
         ),
         actions: [
+
           InkWell(
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Card1()));
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Card1()));
             },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0, left: 8),
-              child: Badge(
-                  position: BadgePosition.topStart(),
-                  badgeColor: HomePage.colorYellow,
-                  badgeContent: Padding(
-                    padding: const EdgeInsets.all(1.0),
-                    child: Text(
-                      counter.toString(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+            child: Row(
+              children: [
+                Container(
+                    width: 50,
+                    child: Text(translate('lan.finishOrder'))),
+                Padding(
+                  padding: const EdgeInsets.only(right: 9.0,left: 9),
+                  child: Badge(
+                      position: BadgePosition.topStart(),
+                      badgeColor: HomePage.colorYellow,
+                      badgeContent: Padding(
+                        padding: const EdgeInsets.only(top: 2.0),
+                        child: Text(counter.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top:15.0,left: 2,right: 2),
+                        child: Icon(Icons.shopping_cart,size: 28,),
+                      )
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Icon(
-                      Icons.shopping_cart,
-                      size: 28,
-                    ),
-                  )),
+                ),
+
+              ],
             ),
           ),
         ],
