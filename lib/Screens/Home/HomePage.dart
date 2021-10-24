@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:badges/badges.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -64,7 +65,7 @@ int _vendorId;
     Icons.shopping_basket,
     Icons.menu,
   ];
-
+int counter =0 ;
   bool menu = false;
 
   bool offers = false;
@@ -143,12 +144,14 @@ int _vendorId;
   getDataFromSharedPref() async {
     final prefs = await SharedPreferences.getInstance();
     final _isLogin = prefs.getBool('isLogin');
+    final _counter = prefs.getInt('counter');
 
     if (_isLogin == null) {
       await prefs.setBool('isLogin', false);
     } else {
       setState(() {
         isLogin = _isLogin;
+        counter= _counter??0;
       });
     }
   }
@@ -271,11 +274,20 @@ int _vendorId;
                     Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Icon(
-                          iconList[2],
-                          size: 30,
-                          color: !profile ? Colors.black26 : Colors.white,
+
+                        Badge(
+                            position: BadgePosition.topStart(),
+                            badgeColor: HomePage.colorYellow,
+                            badgeContent: Padding(
+                              padding: const EdgeInsets.only(top: 2.0),
+                              child: Text(counter.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top:15.0,left: 2,right: 2),
+                              child: Icon(iconList[2],size: 30,  color: !profile ? Colors.black26 : Colors.white,),
+                            )
                         ),
+
                         !profile
                             ? Text(
                           translate('lan.orders'),

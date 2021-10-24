@@ -155,7 +155,7 @@ int counter;
               child: Row(
                 children: [
                   Container(
-                    width: 50,
+                    width: 55,
                       child: Text(translate('lan.finishOrder'))),
                   Padding(
                     padding: const EdgeInsets.only(right: 9.0,left: 9),
