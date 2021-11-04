@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -99,10 +97,10 @@ class _OffersState extends State<Offers> {
           dataAllSubCats['data'][i]['image']));
     }
     if (isLastPage) {
-      _pagingController.appendLastPage(allOffers.sublist(increment));
+      _pagingController.appendLastPage(allOffers.sublist(increment), 'no');
     } else {
       final nextPageKey = pageKey + dataAllSubCats['products']['data'].length;
-      _pagingController.appendPage(allOffers, nextPageKey);
+      _pagingController.appendPage(allOffers, nextPageKey, 'no');
     }
     setState(() {
       increment = increment + 3;
@@ -228,7 +226,6 @@ class _OffersState extends State<Offers> {
                             padding: const EdgeInsets.all(8.0),
                             child: Card(
                               elevation: 2.0,
-
                               child: Column(
                                 children: [
                                   Container(
@@ -247,10 +244,10 @@ class _OffersState extends State<Offers> {
                                         ? ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(20.0),
-
                                             child: Image(
-                                              width:
-                                                  MediaQuery.of(context).size.width,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height /
@@ -264,8 +261,9 @@ class _OffersState extends State<Offers> {
                                             borderRadius:
                                                 BorderRadius.circular(20.0),
                                             child: Image(
-                                              width:
-                                                  MediaQuery.of(context).size.width,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height /
@@ -284,17 +282,19 @@ class _OffersState extends State<Offers> {
                                       MediaQuery.of(context).size.width / 50,
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Column(
                                           children: [
                                             Container(
-                                              width:200,
+                                              width: 200,
                                               child: Text(
                                                 "${allOffers[index].title}",
                                                 style: TextStyle(
                                                     fontSize: 20,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                             ),
                                             Row(
@@ -305,27 +305,32 @@ class _OffersState extends State<Offers> {
                                                     "${allOffers[index].description}",
                                                     style: TextStyle(
                                                       fontSize: 18,
-                                                      overflow: TextOverflow.ellipsis,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                     maxLines: 1,
                                                     textAlign: TextAlign.start,
                                                   ),
                                                 ),
-                                               SizedBox(width: 10,),
-
-                                               Container(
-                                                child: Text(
-                                                  translate('lan.more') + '...',
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              25,
-                                                      color: HomePage.colorGreen),
+                                                SizedBox(
+                                                  width: 10,
                                                 ),
-                                          ),
+                                                Container(
+                                                  child: Text(
+                                                    translate('lan.more') +
+                                                        '...',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            25,
+                                                        color: HomePage
+                                                            .colorGreen),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                             // Row(
@@ -367,6 +372,4 @@ class _OffersState extends State<Offers> {
                 ),
         ));
   }
-
-
 }

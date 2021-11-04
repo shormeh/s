@@ -1,17 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_translate/flutter_translate.dart';
-import 'package:android_intent/android_intent.dart';
-import 'package:app_settings/app_settings.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shormeh/Models/LocationsModel.dart';
 import 'package:shormeh/Screens/Home/HomePage.dart';
-import 'package:http/http.dart' as http;
 import 'package:shormeh/Screens/Locations.dart';
 
 import '../main.dart';
@@ -37,9 +34,9 @@ class _SelectBrancheState extends State<SelectBranche>
   // Position currentLocation;
 
   bool noMarketsOnMap = false;
-  List<LocationModel> allLocationsGPS = new List<LocationModel>();
-double lat;
-double long;
+  List<LocationModel> allLocationsGPS = [];
+  double lat;
+  double long;
   // bool enableClick=true;
 
   int translateLanguage = 0;
@@ -57,18 +54,16 @@ double long;
   Future<void> getDataFromSharedPref() async {
     final prefs = await SharedPreferences.getInstance();
     final _translateLanguage = prefs.getInt('translateLanguage');
-    final _lat=prefs.getDouble('lat');
-    final _long=prefs.getDouble('long');
-    if(widget.lat==null)
-    {
-     setState(() {
-      lat =_lat;
-      long = _long;
-     });
-    }
-    else
+    final _lat = prefs.getDouble('lat');
+    final _long = prefs.getDouble('long');
+    if (widget.lat == null) {
       setState(() {
-        lat =widget.lat;
+        lat = _lat;
+        long = _long;
+      });
+    } else
+      setState(() {
+        lat = widget.lat;
         long = widget.long;
       });
 
@@ -76,8 +71,6 @@ double long;
       setState(() {
         prefs.setInt('translateLanguage', 0);
         widget.lan = 0;
-
-
       });
     } else {
       setState(() {
@@ -85,7 +78,6 @@ double long;
         widget.lan = _translateLanguage;
       });
     }
-
 
     getBranches();
   }
@@ -102,8 +94,6 @@ double long;
     });
   }
 
-
-
   getBranches() async {
     // var response;
     // if (widget.lat == null) {
@@ -112,9 +102,9 @@ double long;
     //       "${HomePage.URL}vendors?lat=${position.latitude}&long=${position.longitude}");
     // }
     // else
-    print(widget.lat.toString()+'gggggg');
-      var response = await http
-          .get("${HomePage.URL}vendors?lat=${lat}&long=${long}");
+    print(widget.lat.toString() + 'gggggg');
+    var response =
+        await http.get("${HomePage.URL}vendors?lat=${lat}&long=${long}");
 
     var data = json.decode(response.body);
     print(data);
@@ -201,7 +191,9 @@ double long;
                             Container(
                                 //margin:EdgeInsets.all(double2),
                                 child: Text(
-                             translateLanguage==0?translate('lan.translateEn') :translate('lan.translateAr'),
+                              translateLanguage == 0
+                                  ? translate('lan.translateEn')
+                                  : translate('lan.translateAr'),
                               // "${AppLocalizations.of(context).language}",
                               style: TextStyle(
                                   fontSize:
@@ -224,9 +216,8 @@ double long;
                         flex: 6,
                         child: GestureDetector(
                           onTap: () {
-                            if(allLocationsGPS.isEmpty)
-                         showDialogeLoading(context);
-
+                            if (allLocationsGPS.isEmpty)
+                              showDialogeLoading(context);
                             else
                               showDialogeBranches(context);
                           },
@@ -295,136 +286,132 @@ double long;
     showDialog(
         context: context,
         builder: (BuildContext context) {
-            return AlertDialog(
-              contentPadding: EdgeInsets.all(0.0),
-              backgroundColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              content: Container(
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width / 1.1,
-                height: MediaQuery.of(context).size.height / 1.1,
-                decoration: ShapeDecoration(
-                    color: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    )),
-                child: Container(
+          return AlertDialog(
+            contentPadding: EdgeInsets.all(0.0),
+            backgroundColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            content: Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width / 1.1,
+              height: MediaQuery.of(context).size.height / 1.1,
+              decoration: ShapeDecoration(
                   color: Colors.transparent,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: allLocationsGPS.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return index == 0
-                          ? Column(
-                              children: [
-                                //DropDown Dialoge
-                                GestureDetector(
-                                  onTap: () {
-                                 Navigator.pop(context);
-                                  },
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          border: Border.all(width: 0.8),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                          color: Colors.white),
-                                      margin: EdgeInsets.all(
-                                          MediaQuery.of(context).size.width /
-                                              40),
-                                      padding: EdgeInsets.all(
-                                          MediaQuery.of(context).size.width /
-                                              30),
-                                      child: Row(
-                                        children: [
-                                          Expanded(child: Container()),
-                                          Container(
-                                              //margin:EdgeInsets.all(double2),
-                                              child: Text(
-                                            translate('lan.branches'),
-                                            style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    23),
-                                          )),
-                                          Expanded(child: Container()),
-                                          Container(
-                                              child: Icon(
-                                            Icons.clear,
-                                            size: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                12,
-                                          ))
-                                        ],
-                                      )),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    //Navigator.pop(context);
-                                    goToHome(allLocationsGPS[index].vendor_id);
-                                  },
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          border: Border.all(width: 0.8),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                          color: Colors.white),
-                                      margin: EdgeInsets.all(
-                                          MediaQuery.of(context).size.width /
-                                              40),
-                                      padding: EdgeInsets.all(
-                                          MediaQuery.of(context).size.width /
-                                              30),
-                                      child: Container(
-                                          alignment: Alignment.center,
-                                          //margin:EdgeInsets.all(double2),
-                                          child: Text(
-                                            widget.lan == 0
-                                                ? "${allLocationsGPS[index].nameEn}"
-                                                : "${allLocationsGPS[index].nameAr}",
-                                            style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    23),
-                                          ))),
-                                ),
-                              ],
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                goToHome(allLocationsGPS[index].vendor_id);
-                              },
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(width: 0.8),
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      color: Colors.white),
-                                  margin: EdgeInsets.all(
-                                      MediaQuery.of(context).size.width / 40),
-                                  padding: EdgeInsets.all(
-                                      MediaQuery.of(context).size.width / 30),
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      //margin:EdgeInsets.all(double2),
-                                      child: Text(
-                                        widget.lan == 0
-                                            ? "${allLocationsGPS[index].nameEn}"
-                                            : "${allLocationsGPS[index].nameAr}",
-                                        style: TextStyle(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                23),
-                                      ))),
-                            );
-                    },
-                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  )),
+              child: Container(
+                color: Colors.transparent,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: allLocationsGPS.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return index == 0
+                        ? Column(
+                            children: [
+                              //DropDown Dialoge
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(width: 0.8),
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                        color: Colors.white),
+                                    margin: EdgeInsets.all(
+                                        MediaQuery.of(context).size.width / 40),
+                                    padding: EdgeInsets.all(
+                                        MediaQuery.of(context).size.width / 30),
+                                    child: Row(
+                                      children: [
+                                        Expanded(child: Container()),
+                                        Container(
+                                            //margin:EdgeInsets.all(double2),
+                                            child: Text(
+                                          translate('lan.branches'),
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  23),
+                                        )),
+                                        Expanded(child: Container()),
+                                        Container(
+                                            child: Icon(
+                                          Icons.clear,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              12,
+                                        ))
+                                      ],
+                                    )),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  //Navigator.pop(context);
+                                  goToHome(allLocationsGPS[index].vendor_id);
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(width: 0.8),
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                        color: Colors.white),
+                                    margin: EdgeInsets.all(
+                                        MediaQuery.of(context).size.width / 40),
+                                    padding: EdgeInsets.all(
+                                        MediaQuery.of(context).size.width / 30),
+                                    child: Container(
+                                        alignment: Alignment.center,
+                                        //margin:EdgeInsets.all(double2),
+                                        child: Text(
+                                          widget.lan == 0
+                                              ? "${allLocationsGPS[index].nameEn}"
+                                              : "${allLocationsGPS[index].nameAr}",
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  23),
+                                        ))),
+                              ),
+                            ],
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              goToHome(allLocationsGPS[index].vendor_id);
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(width: 0.8),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    color: Colors.white),
+                                margin: EdgeInsets.all(
+                                    MediaQuery.of(context).size.width / 40),
+                                padding: EdgeInsets.all(
+                                    MediaQuery.of(context).size.width / 30),
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    //margin:EdgeInsets.all(double2),
+                                    child: Text(
+                                      widget.lan == 0
+                                          ? "${allLocationsGPS[index].nameEn}"
+                                          : "${allLocationsGPS[index].nameAr}",
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              23),
+                                    ))),
+                          );
+                  },
                 ),
               ),
-            );
+            ),
+          );
         });
   }
 
@@ -432,24 +419,25 @@ double long;
     showDialog(
         context: context,
         builder: (BuildContext context) {
-            if(!isIndicatorActive) {
+          if (!isIndicatorActive) {
+            Navigator.pop(context);
+          } else
+            Future.delayed(Duration(seconds: 3), () {
+              // getBranches();
               Navigator.pop(context);
-            }
-            else
-          Future.delayed(Duration(seconds: 3), () {
-            // getBranches();
-             Navigator.pop(context);
-            showDialogeBranches(context);
-          });
-            return AlertDialog(
-              contentPadding: EdgeInsets.all(0.0),
-              backgroundColor: Colors.transparent,
-
-              shape: RoundedRectangleBorder(
+              showDialogeBranches(context);
+            });
+          return AlertDialog(
+            contentPadding: EdgeInsets.all(0.0),
+            backgroundColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              content: Center(child: CircularProgressIndicator(color: HexColor('#40976c'),),),
-            );
-
+            content: Center(
+              child: CircularProgressIndicator(
+                color: HexColor('#40976c'),
+              ),
+            ),
+          );
         });
   }
 
@@ -611,7 +599,6 @@ double long;
       setState(() {
         prefs.setInt('translateLanguage', 0);
         MyApp.setLocale(context, Locale('en'));
-
       });
     } else {
       setState(() {

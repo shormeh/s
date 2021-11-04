@@ -1,3 +1,4 @@
+// import 'package:android_intent/android_intent.dart';
 import 'package:android_intent/android_intent.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
@@ -93,7 +94,7 @@ class _GetLocationState extends State<GetLocation> {
 
   locateUser() async {
     setState(() {
-      circularIndicatorActive=true;
+      circularIndicatorActive = true;
     });
     final prefs = await SharedPreferences.getInstance();
     Position p = await Geolocator.getCurrentPosition(
@@ -103,7 +104,7 @@ class _GetLocationState extends State<GetLocation> {
       prefs.setDouble('lat', p.latitude);
       prefs.setDouble('long', p.longitude);
       setState(() {
-        circularIndicatorActive=false;
+        circularIndicatorActive = false;
       });
       Navigator.pushReplacement(
           context,
@@ -112,7 +113,6 @@ class _GetLocationState extends State<GetLocation> {
                     lat: p.latitude,
                     long: p.longitude,
                   )));
-
     } else
       locateUser();
   }
@@ -121,7 +121,6 @@ class _GetLocationState extends State<GetLocation> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-
       body: Stack(
         children: [
           Column(
@@ -145,7 +144,8 @@ class _GetLocationState extends State<GetLocation> {
                     children: [
                       Text(
                         translate('lan.openGps'),
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5),
                       Container(
@@ -176,7 +176,8 @@ class _GetLocationState extends State<GetLocation> {
                           child: Center(
                             child: Text(
                               translate('lan.openGps3'),
-                              style: TextStyle(color: Colors.white, fontSize: 18),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
                             ),
                           ),
                         ),
@@ -187,20 +188,25 @@ class _GetLocationState extends State<GetLocation> {
               )
             ],
           ),
-          circularIndicatorActive? Container(height: double.infinity,
-            width: double.infinity,
-            color: Colors.white.withOpacity(0.6),
-            child: Center(
-              child: Container(
-                height: 100,
-                width: 100,
-                child: Lottie.asset('assets/images/lf20_mvihowzk.json',fit: BoxFit. fill,height: 100,
-                  width: 100,),
-
-              ),
-            ),
-          )
-              :Container(),
+          circularIndicatorActive
+              ? Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  color: Colors.white.withOpacity(0.6),
+                  child: Center(
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      child: Lottie.asset(
+                        'assets/images/lf20_mvihowzk.json',
+                        fit: BoxFit.fill,
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );

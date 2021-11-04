@@ -10,21 +10,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geopoint/geopoint.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart' as lottie;
 import 'package:overlay_support/overlay_support.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shormeh/Models/LocationsModel.dart';
 import 'package:shormeh/Screens/Home/HomePage.dart';
-import 'package:http/http.dart' as http;
-import 'package:shormeh/Screens/SelectBrabche.dart';
-import 'Cats/1Categories.dart';
-import 'package:geocoding/geocoding.dart';
 
 class Locations extends StatefulWidget {
   String lan;
@@ -43,7 +39,7 @@ class _LocationsState extends State<Locations> {
   // CameraPosition _position1;
   Position currentLocation;
 
-  List<LocationModel> allLocationsGPS = new List<LocationModel>();
+  List<LocationModel> allLocationsGPS = [];
   bool circularIndicatorActive = true;
   bool noMarketsOnMap = false;
   String lan = 'en';
@@ -211,7 +207,6 @@ class _LocationsState extends State<Locations> {
     }
   }
 
-
   Future<Position> locateUser() async {
     return Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -312,14 +307,11 @@ class _LocationsState extends State<Locations> {
 
   getMarketsForGPS() async {
     final response = await http.get(
-
-      "${HomePage.URL}vendors?lat=${currentLocation.latitude}&long=${currentLocation.longitude}",
-     headers: {
-    // "Authorization": "Bearer $token",
-    "Content-Language": lan,
-    }
-
-    );
+        "${HomePage.URL}vendors?lat=${currentLocation.latitude}&long=${currentLocation.longitude}",
+        headers: {
+          // "Authorization": "Bearer $token",
+          "Content-Language": lan,
+        });
 
     var data = json.decode(response.body);
     log(data.toString());
@@ -434,12 +426,12 @@ class _LocationsState extends State<Locations> {
                       width: MediaQuery.of(context).size.width,
                       child: currentLocation == null
                           ? Center(
-                          child:Container(
-                            height: 100,
-                            width:100,
-                            child: lottie.Lottie.asset('assets/images/lf20_mvihowzk.json'),
-                          )
-                      )
+                              child: Container(
+                              height: 100,
+                              width: 100,
+                              child: lottie.Lottie.asset(
+                                  'assets/images/lf20_mvihowzk.json'),
+                            ))
                           : GoogleMap(
                               mapType: MapType.normal,
                               zoomControlsEnabled: false,
@@ -468,7 +460,6 @@ class _LocationsState extends State<Locations> {
                         ),
                       ),
                     ),
-
                     Positioned(
                       top: 50,
                       left: 20,
@@ -478,8 +469,8 @@ class _LocationsState extends State<Locations> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => HomePage(
-                                    isHomeScreen: true,
-                                  )));
+                                        isHomeScreen: true,
+                                      )));
                         },
                         child: Container(
                           height: 50,
@@ -552,7 +543,7 @@ class _LocationsState extends State<Locations> {
                         height: 3,
                       ),
                       Text(
-                         location1.email!="null"? location1.email:'',
+                        location1.email != "null" ? location1.email : '',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,

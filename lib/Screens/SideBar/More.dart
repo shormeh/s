@@ -1,29 +1,22 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:http/http.dart' as http;
 import 'package:overlay_support/overlay_support.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shormeh/Screens/Home/HomePage.dart';
 import 'package:shormeh/Screens/Offers/offers.dart';
-import 'package:shormeh/Screens/SideBar/AboutUs.dart';
 import 'package:shormeh/Screens/SideBar/Comment.dart';
 import 'package:shormeh/Screens/SideBar/MyOdrers.dart';
 import 'package:shormeh/Screens/SideBar/MyPoints.dart';
 import 'package:shormeh/Screens/SideBar/Translation.dart';
 import 'package:shormeh/Screens/SideBar/favorites_screen.dart';
 import 'package:shormeh/Screens/user/login.dart';
-import 'package:http/http.dart' as http;
 import 'package:shormeh/Screens/user/policy_and_conitions.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-
-import '../SelectBrabche.dart';
 
 class More extends StatefulWidget {
   More({Key key}) : super(key: key);
@@ -36,8 +29,8 @@ class _MoreState extends State<More> {
   bool isLogin = false;
 
   String tel = "";
-  String name= '';
-  String phone= '';
+  String name = '';
+  String phone = '';
   onBackPressed(BuildContext context) async {
     // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
     //     HomePage(index:0)), (Route<dynamic> route) => false);
@@ -86,7 +79,6 @@ class _MoreState extends State<More> {
     double double1 = MediaQuery.of(context).size.width / 20;
     double double2 = MediaQuery.of(context).size.width / 25;
     double double3 = MediaQuery.of(context).size.height / 12;
-    double double4 = MediaQuery.of(context).size.width / 22;
 
     return Scaffold(
       appBar: new AppBar(
@@ -101,13 +93,18 @@ class _MoreState extends State<More> {
             Icons.arrow_back_ios,
           ),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage(isHomeScreen: true,)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomePage(
+                          isHomeScreen: true,
+                        )));
           },
         ),
       ),
       body: Container(
-        margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 22,
-            0.0, MediaQuery.of(context).size.width / 22, 0.0),
+        margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 22, 0.0,
+            MediaQuery.of(context).size.width / 22, 0.0),
         child: ListView(
           children: [
             //Profile
@@ -117,49 +114,50 @@ class _MoreState extends State<More> {
               alignment: Alignment.center,
               child: Row(
                 children: [
-
-
                   Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(width: 1, color: HexColor('#40976c'))
-                    ),
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border:
+                              Border.all(width: 1, color: HexColor('#40976c'))),
+                      child: Icon(
+                        Icons.person,
+                        size: 35,
+                        color: HexColor('#40976c'),
+                      )
 
-                    child: Icon(Icons.person,size: 35,color: HexColor('#40976c'),)
-
-                    // Image.asset(
-                    //   "assets/images/user.png",
-                    // ) ,
-                  ),
-
+                      // Image.asset(
+                      //   "assets/images/user.png",
+                      // ) ,
+                      ),
                   SizedBox(
                     width: double2,
                   ),
-                 Column(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   children: [
-                     Text(
-                       name==''||name==null?'': name,
-                       style: TextStyle(
-                           fontSize: 18,
-                           color: Colors.black,
-                           fontWeight: FontWeight.bold,
-                           fontFamily: 'Tajawal'),
-                     ),
-                     SizedBox(height: 5,),
-                     Text(
-                        phone==''||phone==null?'': phone.substring(5),
-                       style: TextStyle(
-                           fontSize: 16,
-                           color: Colors.black,
-                           fontFamily: 'Tajawal'),
-                     ),
-                   ],
-                 )
-
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name == '' || name == null ? '' : name,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Tajawal'),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        phone == '' || phone == null ? '' : phone.substring(5),
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontFamily: 'Tajawal'),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -225,18 +223,19 @@ class _MoreState extends State<More> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),
-                      child: SvgPicture.asset('assets/images/save-money.svg',height: 25,width: 25,),
+                      child: SvgPicture.asset(
+                        'assets/images/save-money.svg',
+                        height: 25,
+                        width: 25,
+                      ),
                     ),
-
                     SizedBox(
                       width: double2,
                     ),
                     Text(
                       translate('lan.myPoints'),
-
                       style: TextStyle(
                           fontSize: double2,
-
                           color: Colors.black,
                           fontFamily: 'Tajawal'),
                     ),
@@ -255,8 +254,10 @@ class _MoreState extends State<More> {
             InkWell(
               onTap: () {
                 if (isLogin) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => FavoritesScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FavoritesScreen()));
                 } else {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Login()));
@@ -267,7 +268,11 @@ class _MoreState extends State<More> {
                 alignment: Alignment.center,
                 child: Row(
                   children: [
-                    SvgPicture.asset('assets/images/favorites.svg',height: 25,width: 25,),
+                    SvgPicture.asset(
+                      'assets/images/favorites.svg',
+                      height: 25,
+                      width: 25,
+                    ),
                     SizedBox(
                       width: double2,
                     ),
@@ -301,10 +306,13 @@ class _MoreState extends State<More> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 2.0,right: 2),
-                      child: SvgPicture.asset('assets/images/language.svg',height: 22,width: 22,),
+                      padding: const EdgeInsets.only(left: 2.0, right: 2),
+                      child: SvgPicture.asset(
+                        'assets/images/language.svg',
+                        height: 22,
+                        width: 22,
+                      ),
                     ),
-
                     SizedBox(
                       width: double2,
                     ),
@@ -336,7 +344,6 @@ class _MoreState extends State<More> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Login()));
                 }
-
               },
               child: Container(
                 height: double3,
@@ -368,7 +375,6 @@ class _MoreState extends State<More> {
                 ),
               ),
             ),
-
 
             Divider(),
             //Excellent Request
@@ -412,8 +418,10 @@ class _MoreState extends State<More> {
             //About Us
             InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ConditionsAndRules()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ConditionsAndRules()));
               },
               child: Container(
                 height: double3,
@@ -522,26 +530,30 @@ class _MoreState extends State<More> {
             //Log Out
             InkWell(
               onTap: () {
-                isLogin?
-                saveDataInSharedPref(context):
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
-          
+                isLogin
+                    ? saveDataInSharedPref(context)
+                    : Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Login()));
               },
               child: Container(
                 height: double3,
                 alignment: Alignment.center,
                 child: Row(
                   children: [
-                    isLogin? Image.asset(
-                      "assets/images/logout.png",
-                      width: double1,
-                      height: double1,
-                    ): Icon(Icons.login),
+                    isLogin
+                        ? Image.asset(
+                            "assets/images/logout.png",
+                            width: double1,
+                            height: double1,
+                          )
+                        : Icon(Icons.login),
                     SizedBox(
                       width: double2,
                     ),
                     Text(
-                      isLogin? translate('lan.logout'):translate('lan.login'),
+                      isLogin
+                          ? translate('lan.logout')
+                          : translate('lan.login'),
                       style: TextStyle(
                           fontSize: double2,
                           color: Colors.black,
@@ -566,9 +578,7 @@ class _MoreState extends State<More> {
     );
   }
 
-
   void saveDataInSharedPref(BuildContext context) async {
-
     final prefs = await SharedPreferences.getInstance();
     displayToastMessage(translate('lan.signOut'));
     await prefs.setString("cardToken", "");
@@ -599,18 +609,20 @@ class _MoreState extends State<More> {
     //     textColor: Colors.white,
     //     fontSize: 16.0);
     showSimpleNotification(
-        Container(height: 50,
+        Container(
+          height: 50,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
-            child: Text(toastMessage,
-              style: TextStyle(color: Colors.black,
+            child: Text(
+              toastMessage,
+              style: TextStyle(
+                  color: Colors.black,
                   fontSize: 18,
-                  fontWeight: FontWeight.bold),),
+                  fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         duration: Duration(seconds: 3),
-        background:HomePage.colorYellow
-
-    );
+        background: HomePage.colorYellow);
   }
 }

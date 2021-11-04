@@ -32,7 +32,7 @@
     "addMore" : "اضف المزيد",
     "addCar": "اضافة سيارة",
 
-    "saltElshraa" : "سلة الشراء",
+    "saltElshraa" : "طلباتي",
     "saltElshraaFargaa" : "سلة الشراء فارغة",
     "rs" : "ريال",
     "count" : "العدد",
@@ -44,16 +44,16 @@
     "deliveryFee" : "قيمة التوصيل",
     "tax" :"القيمة المضافة",
     "discound" : "خصم",
-    "senCoupoun" : "اضف كوبون خصم",
+    "senCoupoun" : " كوبون خصم",
     "branchClosed": "هذا الفرع مغلق الان",
     "couponDiscound" : "كوبون الخصم",
-    "saveOn": "وفر على طلبك",
+    "saveOn": "اضافة كوبون",
 "chooseBranch": "اختيار فرع اخر",
     "times": "مواعيد العمل",
     "from":"من :  ",
     "to": "إلى : ",
     "useCo": "استخدم كوبون على هذا الطلب",
-    "sendOrder" : "شراء الأن",
+    "sendOrder" : "اكمال الطلب",
     "enterCo": "ادخل الكوبون",
     "numOfOrders": "العدد",
     "pieces": "قطع",
@@ -167,7 +167,12 @@
     "discound2": "الخصم/النقاط",
     "pointsLimit": "الحد الادنى من النقاط التي يمكن تحويلها",
     "Point": "نقطة",
-    "finishOrder": "انهاء الطلب"
+    "finishOrder": "انهاء الطلب",
+    "submitPayment": "اتمام الدفع",
+    "paymentData":"بيانات الدفع",
+    "choosePayment": "اختر طريقة الدفع : ",
+    "pay1": "ادفع الان"
+
 
   }
 }

@@ -1,3 +1,6 @@
+include ':oppwa.mobile-3.10.0-release'
+include ':oppwa.mobile1'
+include ':oppwa.mobile'
 include ':app'
 
 def localPropertiesFile = new File(rootProject.projectDir, "local.properties")

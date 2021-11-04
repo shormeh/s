@@ -7,12 +7,12 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart' as lottie;
 import 'package:overlay_support/overlay_support.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shormeh/Screens/Card/OrderHome/AdressList.dart';
 import 'package:shormeh/Screens/Home/HomePage.dart';
-import 'package:http/http.dart' as http;
 
 class AddAddress extends StatefulWidget {
   @override
@@ -122,11 +122,12 @@ class _AddAddressState extends State<AddAddress> {
     currentLocation = await locateUser();
     setState(() {
       markerTapped = true;
-      marker = createMarker(currentLocation.latitude, currentLocation.longitude);
+      marker =
+          createMarker(currentLocation.latitude, currentLocation.longitude);
       lat = currentLocation.latitude;
       lng = currentLocation.longitude;
     });
-    print(lat.toString()+'ggg');
+    print(lat.toString() + 'ggg');
   }
 
   Future<Position> locateUser() {
@@ -149,11 +150,11 @@ class _AddAddressState extends State<AddAddress> {
     Navigator.of(context).pop();
   }
 
-  Marker createMarker(double latitude , double longitude){
-   return Marker(
+  Marker createMarker(double latitude, double longitude) {
+    return Marker(
       draggable: true,
       markerId: MarkerId('Marker'),
-      position: LatLng(latitude , longitude),
+      position: LatLng(latitude, longitude),
     );
   }
 
@@ -193,7 +194,7 @@ class _AddAddressState extends State<AddAddress> {
                         //icon:Icon(Icons.email),
                         enabledBorder: new UnderlineInputBorder(
                             borderSide:
-                            new BorderSide(color: HomePage.colorGrey)),
+                                new BorderSide(color: HomePage.colorGrey)),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: HomePage.colorGrey),
                         ),
@@ -224,7 +225,7 @@ class _AddAddressState extends State<AddAddress> {
                         //icon:Icon(Icons.),
                         enabledBorder: new UnderlineInputBorder(
                             borderSide:
-                            new BorderSide(color: HomePage.colorGrey)),
+                                new BorderSide(color: HomePage.colorGrey)),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: HomePage.colorGrey),
                         ),
@@ -237,38 +238,38 @@ class _AddAddressState extends State<AddAddress> {
                   ),
                   const SizedBox(height: 40),
 
-
-                  markerTapped?  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: GoogleMap(
-                        mapType: MapType.terrain,
-                        myLocationEnabled: true,
-                        zoomControlsEnabled: false,
-                        onTap: (location){
-                          setState(() {
-                            marker=  createMarker(location.latitude, location.longitude);
-                            lat = location.latitude;
-                            lng =  location.longitude;
-                          });
-                          print(lat);
-                        },
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(currentLocation.latitude,currentLocation.longitude),
-                          zoom: 14.0,
-                        ),
-                        markers: Set<Marker>.of(
-                          <Marker>[
-                            marker
-                          ],
-                        ),
-                        onMapCreated: (GoogleMapController controller) {
-                          mapController = controller;
-                        },
-                      ),
-                    ),
-                  )
-                      :Container(),
+                  markerTapped
+                      ? Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: GoogleMap(
+                              mapType: MapType.terrain,
+                              myLocationEnabled: true,
+                              zoomControlsEnabled: false,
+                              onTap: (location) {
+                                setState(() {
+                                  marker = createMarker(
+                                      location.latitude, location.longitude);
+                                  lat = location.latitude;
+                                  lng = location.longitude;
+                                });
+                                print(lat);
+                              },
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(currentLocation.latitude,
+                                    currentLocation.longitude),
+                                zoom: 14.0,
+                              ),
+                              markers: Set<Marker>.of(
+                                <Marker>[marker],
+                              ),
+                              onMapCreated: (GoogleMapController controller) {
+                                mapController = controller;
+                              },
+                            ),
+                          ),
+                        )
+                      : Container(),
                   const SizedBox(height: 40),
 
                   Container(
@@ -283,20 +284,18 @@ class _AddAddressState extends State<AddAddress> {
                       child: RaisedButton(
                         child: Text(translate('lan.submit'),
                             style: TextStyle(
-                                fontSize: MediaQuery.of(context).size.width / 20,
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 20,
                                 color: Colors.white)),
                         color: HomePage.colorGreen,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             SendDataToServer(context);
                           }
-
                         },
                       ),
                     ),
                   ),
-
-
                 ]),
               ),
             )),
@@ -323,13 +322,11 @@ class _AddAddressState extends State<AddAddress> {
         ));
   }
 
-
-
   Future SendDataToServer(BuildContext context) async {
     setState(() {
       loading = true;
     });
-    print(lat.toString()+'hhh');
+    print(lat.toString() + 'hhh');
     var response = await http.post("${HomePage.URL}cart/add_address", headers: {
       "Authorization": "Bearer $token",
       "Content-Language": lan
@@ -362,27 +359,26 @@ class _AddAddressState extends State<AddAddress> {
       displayToastMessage(datauser['errors'][0]['message'].toString());
     }
 
-      loading = false;
-
+    loading = false;
   }
 
   void displayToastMessage(var toastMessage) {
-
-
     showSimpleNotification(
-        Container(height: 50,
+        Container(
+          height: 50,
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
-            child: Text(toastMessage,
-              style: TextStyle(color: Colors.black,
+            child: Text(
+              toastMessage,
+              style: TextStyle(
+                  color: Colors.black,
                   fontSize: 18,
-                  fontWeight: FontWeight.bold),),
+                  fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         duration: Duration(seconds: 3),
-        background:HomePage.colorYellow
-
-    );
+        background: HomePage.colorYellow);
     // Fluttertoast.showToast(
     //     msg: toastMessage.toString(),
     //     toastLength: Toast.LENGTH_LONG,
