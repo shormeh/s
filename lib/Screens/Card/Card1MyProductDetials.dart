@@ -2,20 +2,18 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shormeh/Models/CardModel1.dart';
-import 'package:http/http.dart' as http;
 import 'package:shormeh/Screens/Card/Card2MyAllProductsDetails.dart';
 import 'package:shormeh/Screens/Cats/3ProductDetails.dart';
 import 'package:shormeh/Screens/Home/HomePage.dart';
-import 'package:shormeh/Screens/SelectBrabche.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class Card1 extends StatefulWidget {
   bool fromHome;
@@ -37,7 +35,7 @@ class _Card1State extends State<Card1> {
   List<String> addOn = [];
   String token = '';
   int counter;
-int vendorID;
+  int vendorID;
   @override
   void initState() {
     // TODO: implement initState
@@ -124,8 +122,11 @@ int vendorID;
                         .length ==
                     0
                 ? ''
-                : dataMyCardProducts['data']['items'][i]['cartitemoption'][0]
-                    ['optionvalue']['name_en'],
+                : lan == 'ar'
+                    ? dataMyCardProducts['data']['items'][i]['cartitemoption']
+                        [0]['optionvalue']['name_en']
+                    : dataMyCardProducts['data']['items'][i]['cartitemoption']
+                        [0]['optionvalue']['name_ar'],
             addOn: addOn,
             notes: dataMyCardProducts['data']['items'][i]['note'] == null
                 ? ''
@@ -276,49 +277,71 @@ int vendorID;
                                             child: Text(
                                               "${allMyCardProducts[index].productName}" ??
                                                   '',
-                                              style: TextStyle(fontFamily: 'Tajawal'),
+                                              style: TextStyle(
+                                                  fontFamily: 'Tajawal'),
                                             ),
                                           ),
-
                                           Row(
                                             children: [
                                               InkWell(
                                                   onTap: () {
                                                     setState(() {
-                                                      allMyCardProducts[index].count++;
-                                                      changeCount(allMyCardProducts[index],allMyCardProducts[index].count);
+                                                      allMyCardProducts[index]
+                                                          .count++;
+                                                      changeCount(
+                                                          allMyCardProducts[
+                                                              index],
+                                                          allMyCardProducts[
+                                                                  index]
+                                                              .count);
                                                     });
                                                   },
-                                                  child: Image.asset('assets/images/plus.png',height: 30,color:HexColor('#40976c'))
+                                                  child: Image.asset(
+                                                      'assets/images/plus.png',
+                                                      height: 30,
+                                                      color:
+                                                          HexColor('#40976c'))),
+                                              const SizedBox(
+                                                width: 10,
                                               ),
-                                              const SizedBox(width: 10,),
                                               Text(
                                                 '${allMyCardProducts[index].count} ',
                                                 style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                    color:HexColor('#40976c')
-                                                ),
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: HexColor('#40976c')),
                                               ),
-                                              const SizedBox(width: 7,),
+                                              const SizedBox(
+                                                width: 7,
+                                              ),
                                               InkWell(
                                                   onTap: () {
-
-                                                    if (allMyCardProducts[index].count > 1)
+                                                    if (allMyCardProducts[index]
+                                                            .count >
+                                                        1)
                                                       setState(() {
-                                                        allMyCardProducts[index].count--;
-                                                        print(allMyCardProducts[index].count);
-                                                        changeCount(allMyCardProducts[index],allMyCardProducts[index].count);
+                                                        allMyCardProducts[index]
+                                                            .count--;
+                                                        print(allMyCardProducts[
+                                                                index]
+                                                            .count);
+                                                        changeCount(
+                                                            allMyCardProducts[
+                                                                index],
+                                                            allMyCardProducts[
+                                                                    index]
+                                                                .count);
                                                       });
-
                                                   },
-                                                  child: Image.asset('assets/images/minus.png',height: 30,color:HexColor('#40976c') ,)
-                                              ),
+                                                  child: Image.asset(
+                                                    'assets/images/minus.png',
+                                                    height: 30,
+                                                    color: HexColor('#40976c'),
+                                                  )),
                                             ],
                                           ),
                                         ],
                                       ),
-
                                       leading: CircleAvatar(
                                         backgroundImage: NetworkImage(
                                           ' ${allMyCardProducts[index].productImage}'
@@ -338,28 +361,30 @@ int vendorID;
                                               Row(
                                                 children: [
                                                   Expanded(
-                                                    child:  Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
                                                         Expanded(
                                                           child: Text(
-                                                            translate('lan.count'),
+                                                            translate(
+                                                                'lan.count'),
                                                             style: TextStyle(
                                                                 fontSize: 16,
                                                                 fontFamily:
                                                                     'Tajawal'),
                                                           ),
                                                         ),
-
                                                         Text(
                                                           '${allMyCardProducts[index].count} ',
                                                           style: TextStyle(
                                                               fontSize: 16,
-                                                              fontFamily: 'Tajawal'),
+                                                              fontFamily:
+                                                                  'Tajawal'),
                                                         ),
                                                       ],
                                                     ),
-
                                                   ),
                                                   // Text(
                                                   //   '${allMyCardProducts[index].count} ',
@@ -633,29 +658,28 @@ int vendorID;
     );
   }
 
-
-  Future changeCount(Card1Model product,int count) async {
+  Future changeCount(Card1Model product, int count) async {
     print('cccccc');
-    print(token.toString()+'hhhhhhh');
+    print(token.toString() + 'hhhhhhh');
     print(vendorID);
     print(product.id.toString());
     print(count.toString());
     print(product.addOn.toString());
     print(product.notes.toString());
-      var  response = await http.post("${HomePage.URL}cart/add_product", headers: {
-        "Content-Language": lan,
-        "Authorization": "Bearer $token",
-      }, body: {
-         "vendor_id": "$vendorID",
-        "product_id": product.productId.toString(),
-        "quantity": count.toString(),
-        "options": product.option,
-        "addons": product.addOn.toString(),
-        "note": product.notes.toString(),
-        "cart_token": cardToken,
-      });
-      var data = response.body;
-      print(data);
+    var response = await http.post("${HomePage.URL}cart/add_product", headers: {
+      "Content-Language": lan,
+      "Authorization": "Bearer $token",
+    }, body: {
+      "vendor_id": "$vendorID",
+      "product_id": product.productId.toString(),
+      "quantity": count.toString(),
+      "options": product.option,
+      "addons": product.addOn.toString(),
+      "note": product.notes.toString(),
+      "cart_token": cardToken,
+    });
+    var data = response.body;
+    print(data);
     print('ooooooooo');
   }
 

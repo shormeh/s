@@ -7,17 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
-
 import 'package:overlay_support/overlay_support.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shormeh/Models/Addon.dart';
 import 'package:shormeh/Models/Options.dart';
 import 'package:shormeh/Models/ProductDetailsModel.dart';
-
 import 'package:shormeh/Models/Slider.dart';
 import 'package:shormeh/Screens/Card/Card1MyProductDetials.dart';
 import 'package:shormeh/Screens/Home/HomePage.dart';
@@ -51,10 +48,10 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   ProductDetailsModel productDetailsModel =
-      new ProductDetailsModel(0, "", "", "", "", "", "", 0);
+      new ProductDetailsModel(0, "", "", "", "", "", "", 0, '', 0);
   bool isIndicatorActive = true;
   List<SliderModel> allSliderImagesProduct = [];
-  List<AddonModel> allAddons =[];
+  List<AddonModel> allAddons = [];
   List<OptionsModel> allOptions = [];
   TextEditingController tECNotes = new TextEditingController();
   List<String> images = [];
@@ -79,9 +76,8 @@ class _ProductDetailsState extends State<ProductDetails> {
     // TODO: implement initState
     super.initState();
     getDataFromSharedPrfs();
-    print(widget.productID.toString()+'jjjjj');
-    print(widget.catID.toString()+'jjjjj');
-
+    print(widget.productID.toString() + 'jjjjj');
+    print(widget.catID.toString() + 'jjjjj');
   }
 
   Future getDataFromSharedPrfs() async {
@@ -101,7 +97,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       _counter == null ? counter = 0 : counter = _counter;
       translationLanguage = _translateLanguage;
     });
-    print(vendorID.toString()+'hhhh');
+    print(vendorID.toString() + 'hhhh');
     if (_cardToken != null) {
       setState(() {
         cardToken = _cardToken;
@@ -121,7 +117,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       });
     }
 
-    print(token.toString()+'jjjjjj');
+    print(token.toString() + 'jjjjjj');
   }
 
   Future getProductDetails() async {
@@ -145,6 +141,8 @@ class _ProductDetailsState extends State<ProductDetails> {
         dataProductDetails['description'],
         dataProductDetails['price'],
         dataProductDetails['in_favourite'],
+        dataProductDetails['allergens'],
+        dataProductDetails['calories'],
       );
 
       //Addons
@@ -201,8 +199,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           prefs.setString('cardToken', '');
           cardToken = '';
         });
-      }
-      else
+      } else
         SendDataToServer();
 
       setState(() {
@@ -228,32 +225,35 @@ class _ProductDetailsState extends State<ProductDetails> {
           child: Icon(Icons.arrow_back_ios),
         ),
         actions: [
-
           InkWell(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Card1()));
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Card1()));
             },
             child: Row(
               children: [
-                Container(
-                    width: 55,
-                    child: Text(translate('lan.finishOrder'))),
+                Container(width: 55, child: Text(translate('lan.finishOrder'))),
                 Padding(
-                  padding: const EdgeInsets.only(right: 9.0,left: 9),
+                  padding: const EdgeInsets.only(right: 9.0, left: 9),
                   child: Badge(
                       position: BadgePosition.topStart(),
                       badgeColor: HomePage.colorYellow,
                       badgeContent: Padding(
                         padding: const EdgeInsets.only(top: 2.0),
-                        child: Text(counter.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+                        child: Text(
+                          counter.toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(top:15.0,left: 2,right: 2),
-                        child: Icon(Icons.shopping_cart,size: 28,),
-                      )
-                  ),
+                        padding:
+                            const EdgeInsets.only(top: 15.0, left: 2, right: 2),
+                        child: Icon(
+                          Icons.shopping_cart,
+                          size: 28,
+                        ),
+                      )),
                 ),
-
               ],
             ),
           ),
@@ -328,14 +328,49 @@ class _ProductDetailsState extends State<ProductDetails> {
                             fontSize: MediaQuery.of(context).size.width / 25),
                       ),
                     ),
+                    productDetailsModel.description == null
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.fromLTRB(50, 5, 50, 5),
+                            child: Text(
+                              "${productDetailsModel.description}",
+                              maxLines: 4,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width / 25),
+                            ),
+                          ),
+
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(50, 5, 50, 5),
-                      child: Text(
-                        "${productDetailsModel.description}",
-                        maxLines: 4,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width / 25),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                translate('lan.calories'),
+                                style: TextStyle(
+                                    color: HomePage.colorGreen,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(productDetailsModel.calories.toString()),
+                            ],
+                          ),
+                          Spacer(),
+                          productDetailsModel.allergens == null
+                              ? Container()
+                              : Column(
+                                  children: [
+                                    Text(translate('lan.allergens'),
+                                        style: TextStyle(
+                                            color: HomePage.colorGreen,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(productDetailsModel.allergens
+                                        .toString()),
+                                  ],
+                                ),
+                        ],
                       ),
                     ),
                     Row(
@@ -759,10 +794,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                 //Submit
                 InkWell(
                   onTap: () {
-                    if(widget.update!=null)
+                    if (widget.update != null)
                       removeProduct(widget.productID);
                     else
-                    SendDataToServer();
+                      SendDataToServer();
                   },
                   // showCupertinoModalBottomSheet(
                   // expand: false,
@@ -932,8 +967,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   Future SendDataToServer({String token}) async {
     final prefs = await SharedPreferences.getInstance();
-  token = prefs.getString('token');
-
+    token = prefs.getString('token');
 
     var listOptions = [];
     for (int i = 0; i < allOptions.length; i++) {
@@ -968,14 +1002,15 @@ class _ProductDetailsState extends State<ProductDetails> {
     setState(() {
       loading = true;
     });
-    if (cardToken == "" || cardToken == null ) {
+    if (cardToken == "" || cardToken == null) {
       prefs.setInt('counter', 1);
       setState(() {
         prefs.setInt('counter', 1);
         counter = 1;
       });
 
-    var  response = await http.post("${HomePage.URL}cart/add_product", headers: {
+      var response =
+          await http.post("${HomePage.URL}cart/add_product", headers: {
         "Content-Language": lan,
         "Authorization": "Bearer $token",
       }, body: {
@@ -992,8 +1027,9 @@ class _ProductDetailsState extends State<ProductDetails> {
         saveDataInSharedPref(context, dataOrder['cart']['token']);
       }
     } else {
-      print('CarToken'+cardToken.toString());
-      var  response = await http.post("${HomePage.URL}cart/add_product", headers: {
+      print('CarToken' + cardToken.toString());
+      var response =
+          await http.post("${HomePage.URL}cart/add_product", headers: {
         "Content-Language": lan,
         "Authorization": "Bearer $token",
       }, body: {
@@ -1033,15 +1069,11 @@ class _ProductDetailsState extends State<ProductDetails> {
         displayToastMessage(translate('lan.updated'));
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Card1()));
-      } else if(widget.favorite!=null)
-      {
+      } else if (widget.favorite != null) {
         displayToastMessage(translate('lan.addedSuccessfully'));
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => FavoritesScreen()));
-      }
-      else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => FavoritesScreen()));
+      } else {
         displayToastMessage(translate('lan.addedSuccessfully'));
         Navigator.pushReplacement(
             context,

@@ -5,6 +5,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shormeh/Models/OffersModel.dart';
 import 'package:shormeh/Screens/Home/HomePage.dart';
@@ -131,6 +132,19 @@ class _OffersState extends State<Offers> {
                   physics: ScrollPhysics(),
                   pagingController: _pagingController,
                   builderDelegate: PagedChildBuilderDelegate<OffersModel>(
+                      noItemsFoundIndicatorBuilder: (_) {
+                        return Column(
+                          children: [
+                            Container(
+                              height: 400,
+                              width: 500,
+                              child: Lottie.asset(
+                                  'assets/images/lf20_f8ya7rj2.json'),
+                            ),
+                            Text(translate('lan.offersEmpty')),
+                          ],
+                        );
+                      },
                       firstPageProgressIndicatorBuilder: (_) => Column(
                             children: [
                               Container(

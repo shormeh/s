@@ -85,8 +85,8 @@
 
 
     "customYourOrder" : "اختيارك من الاضافات",
-    "customYourOptions" : "اختيارك من الحجم",
-    "chooseOne" : " اختر 1 ",
+    "customYourOptions" : "يمكنك اختيار",
+    "chooseOne" : "1 اختيار",
     "notes" : "ملاحظات",
     "optional" : "اختيارى",
     "leftYourNotes" : "اترك ملاحظاتك",
@@ -99,7 +99,7 @@
     "adfEnwanAkhr" : "اضافة عنوان اخر",
     "adfCar" : "اضف سيارة",
     "pleaseChooseSize" : "من فضلك اختار الحجم",
-    "size": "الحجم",
+    "size": "الاختيار",
     "addons": "الاضافات",
     "details": "تفاصيل",
 
@@ -171,7 +171,12 @@
     "submitPayment": "اتمام الدفع",
     "paymentData":"بيانات الدفع",
     "choosePayment": "اختر طريقة الدفع : ",
-    "pay1": "ادفع الان"
+    "pay1": "ادفع الان",
+    "priceChoice": "السعر حسب اختيارك",
+    "calories": "سعرات حرارية",
+    "allergens": "مسببات حساسية",
+    "ordersEmpty": "لا يوجد طلبات",
+    "offersEmpty": "لا يوجد عروض حاليا"
 
 
   }

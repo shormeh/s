@@ -476,7 +476,9 @@ class _LocationsState extends State<Locations> {
                           height: 50,
                           width: 50,
                           child: Icon(
-                            Icons.arrow_back_ios,
+                            lan == 'en'
+                                ? Icons.arrow_back_ios
+                                : Icons.arrow_forward_ios,
                           ),
                         ),
                       ),

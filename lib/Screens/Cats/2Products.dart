@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
@@ -111,7 +112,7 @@ class _ProductsState extends State<Products> {
     dataAllSubCats = json.decode(response.body);
 
     final isLastPage = dataAllSubCats['data'].length < 5;
-    print(response.body);
+    log(response.body);
     for (int i = 0; i < dataAllSubCats['data'].length; i++) {
       allSubCats.add(new ProductsModel(
         dataAllSubCats['data'][i]['id'],
@@ -392,46 +393,53 @@ class _ProductsState extends State<Products> {
                           Container(
                             margin: EdgeInsets.only(
                                 top: MediaQuery.of(context).size.width / 3),
+                            alignment: Alignment.bottomCenter,
+                            padding: EdgeInsets.only(bottom: 15),
                             child: Row(
                               children: [
                                 SizedBox(
                                   width: MediaQuery.of(context).size.width / 20,
                                 ),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.8,
+                                Expanded(
                                   child: Text(allSubCats[index].mainName,
                                       style: TextStyle(
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              25,
+                                          fontSize: 16,
                                           color: Colors.white,
-                                          fontWeight: FontWeight.bold)),
+                                          fontWeight: FontWeight.bold,
+                                          overflow: TextOverflow.ellipsis)),
                                 ),
-                                Expanded(child: Container()),
                                 Row(
                                   children: [
-                                    Text(
-                                      "${allSubCats[index].price}" + ' ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              25,
-                                          color: HomePage.colorYellow),
-                                    ),
-                                    Text(
-                                      translate('lan.rs'),
-                                      style: TextStyle(
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              25,
-                                          fontWeight: FontWeight.bold,
-                                          color: HomePage.colorYellow),
-                                    ),
+                                    allSubCats[index].price == "0.00"
+                                        ? Text(
+                                            translate('lan.priceChoice'),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11,
+                                                color: HomePage.colorYellow),
+                                          )
+                                        : Text(
+                                            "${allSubCats[index].price}" + ' ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    25,
+                                                color: HomePage.colorYellow),
+                                          ),
+                                    allSubCats[index].price == "0.00"
+                                        ? Container()
+                                        : Text(
+                                            translate('lan.rs'),
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    25,
+                                                fontWeight: FontWeight.bold,
+                                                color: HomePage.colorYellow),
+                                          ),
                                   ],
                                 ),
                                 SizedBox(

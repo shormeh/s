@@ -3,8 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-
 import 'package:hexcolor/hexcolor.dart';
+import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,8 +13,6 @@ import 'package:shormeh/Screens/Card/Card3OrderDetails.dart';
 import 'package:shormeh/Screens/Card/Cars/CarsList.dart';
 import 'package:shormeh/Screens/Card/OrderHome/AdressList.dart';
 import 'package:shormeh/Screens/Home/HomePage.dart';
-import 'package:http/http.dart' as http;
-
 
 class Card2 extends StatefulWidget {
   @override
@@ -67,7 +65,6 @@ class _Card2State extends State<Card2> with TickerProviderStateMixin {
 
     var dataMyCardProducts = json.decode(response.body);
 
-
     setState(() {
       print("${dataMyCardProducts.length}");
       for (int i = 0; i < dataMyCardProducts.length; i++) {
@@ -86,6 +83,7 @@ class _Card2State extends State<Card2> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           translate('lan.trkEltawseel'),
@@ -118,10 +116,10 @@ class _Card2State extends State<Card2> with TickerProviderStateMixin {
                     height: 30,
                   ),
                   Container(
-                    height: 170,
+                    height: 190,
                     width: MediaQuery.of(context).size.width * 0.5,
-                    child: Lottie.asset(
-                        'assets/images/69733-food-beverage.json',
+                    child: Image.asset(
+                        'assets/images/animation_500_kw20b9qy.gif',
                         fit: BoxFit.fill),
                   ),
                   const SizedBox(
@@ -139,7 +137,7 @@ class _Card2State extends State<Card2> with TickerProviderStateMixin {
                               onTap: () {
                                 if (allOrderMethods[index].id == 1) {
                                   setState(() {
-                                    isIndicatorActive= true;
+                                    isIndicatorActive = true;
                                   });
                                   sendMethodeOrderDeliver(1);
                                 } else if (allOrderMethods[index].id == 2) {
@@ -149,7 +147,6 @@ class _Card2State extends State<Card2> with TickerProviderStateMixin {
                                     MaterialPageRoute(
                                         builder: (context) => CarsList()),
                                   );
-
                                 } else if (allOrderMethods[index].id == 3) {
                                   sendMethodeOrderDeliver(3);
                                   Navigator.push(
@@ -157,7 +154,6 @@ class _Card2State extends State<Card2> with TickerProviderStateMixin {
                                     MaterialPageRoute(
                                         builder: (context) => AdressList()),
                                   );
-
                                 }
                               },
                               child: Container(
@@ -209,7 +205,6 @@ class _Card2State extends State<Card2> with TickerProviderStateMixin {
   }
 
   Future sendMethodeOrderDeliver(int id) async {
-
     var response =
         await http.post("${HomePage.URL}cart/add_order_method", headers: {
       "Authorization": "Bearer $token",
@@ -221,16 +216,15 @@ class _Card2State extends State<Card2> with TickerProviderStateMixin {
 
     var dataResponseChooseMethode = json.decode(response.body);
     log(dataResponseChooseMethode.toString() + 'coco');
-    if (id == 1){
+    if (id == 1) {
       Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) =>
                 OrderDetails(dataOrderDetails: dataResponseChooseMethode)),
       );
-    isIndicatorActive = false;
+      isIndicatorActive = false;
     }
-
   }
 
   // Future chooseBranche(int id) async {

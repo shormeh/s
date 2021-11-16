@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -17,14 +14,15 @@ class ConditionsAndRules extends StatefulWidget {
 }
 
 class _ConditionsAndRulesState extends State<ConditionsAndRules> {
-  Color colorGreen=Color(0xff119546);
+  Color colorGreen = Color(0xff119546);
   onBackPressed(BuildContext context) {
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
   }
+
   String terms;
-  bool circularIndicatorActive=true;
- bool loading = false;
+  bool circularIndicatorActive = true;
+  bool loading = false;
   int lan = 0;
   @override
   void initState() {
@@ -42,20 +40,17 @@ class _ConditionsAndRulesState extends State<ConditionsAndRules> {
     });
   }
 
-
   Future getTerms() async {
-setState(() {
-  loading = true;
-});
+    setState(() {
+      loading = true;
+    });
     var response = await http.get("${HomePage.URL}terms");
     setState(() {
       terms = response.body.toString();
       loading = false;
     });
-
-
-
   }
+
   void displayToastMessage(var toastMessage) {
     Fluttertoast.showToast(
         msg: toastMessage.toString(),
@@ -64,8 +59,7 @@ setState(() {
         timeInSecForIosWeb: 1,
         backgroundColor: colorGreen,
         textColor: Colors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
     // _goToHome();
   }
 
@@ -88,25 +82,26 @@ setState(() {
           backgroundColor: HexColor('#40976c'),
           elevation: 5.0,
         ),
-      body:
-      loading?Center(
-          child:Container(
-            height: 100,
-            width:100,
-            child: Lottie.asset('assets/images/lf20_mvihowzk.json'),
-          )
-      )
-          :  Row(
-        mainAxisAlignment:lan==0? MainAxisAlignment.end:MainAxisAlignment.start,
-            children: [
-              Directionality(
-        textDirection: TextDirection.rtl,
-                child: Html(
-        data: terms,
-      ),
-              ),
-            ],
-          )
-    );
+        body: loading
+            ? Center(
+                child: Container(
+                height: 100,
+                width: 100,
+                child: Lottie.asset('assets/images/lf20_mvihowzk.json'),
+              ))
+            : Row(
+                mainAxisAlignment:
+                    lan == 0 ? MainAxisAlignment.end : MainAxisAlignment.start,
+                children: [
+                  Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: SingleChildScrollView(
+                      child: Html(
+                        data: terms,
+                      ),
+                    ),
+                  ),
+                ],
+              ));
   }
 }

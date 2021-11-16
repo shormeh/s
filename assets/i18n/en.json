@@ -67,7 +67,7 @@
   "orderNow": "Order Now",
   "from":"from : ",
   "to": "to :      ",
-  "size": "Size",
+  "size": "Choice",
   "addons": "Addons",
   "myCars": "My Cars",
   "addCar": "Add Car",
@@ -75,8 +75,8 @@
   "openGps2": "If we have your location, we can help you to get nearby branches. ",
 
   "customYourOrder" : "Your Choice Of Additions",
-  "customYourOptions" :"Your Choice Of Size",
-  "chooseOne" : " Choose 1 ",
+  "customYourOptions" :"You can choose",
+  "chooseOne" : " 1 Choice ",
   "notes" : "Notes",
   "optional" : "Optional",
   "leftYourNotes" : "Leave Your Notes",
@@ -168,5 +168,10 @@
   "submitPayment": "Submit Payment",
   "paymentData":"Payment Data",
   "choosePayment": "Choose payment method :  ",
-  "pay1": "Pay Now"
+  "pay1": "Pay Now",
+  "priceChoice": "Price According to your choice",
+  "calories": "Calories",
+  "allergens": "Allergens",
+  "ordersEmpty": "Orders Empty",
+  "offersEmpty": "No Offers"
 }}
